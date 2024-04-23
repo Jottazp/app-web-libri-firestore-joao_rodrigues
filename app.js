@@ -10,6 +10,9 @@ function renderBook(doc) {
     let li = document.createElement('li');
     let titulo = document.createElement('span')
     let autor = document.createElement('span')
+    let excluir = document.createElement('div')
+
+    excluir.textContent = "X"
 
     // CARREGA OS DADOS NOS ELEMENTOS HTML:
     li.setAttribute('data-id', doc.id);
@@ -19,6 +22,19 @@ function renderBook(doc) {
     // ADICIONANDO OS DADOS DE AUTOR E TITULO NA TAG LI:
     li.appendChild(titulo);
     li.appendChild(autor);
+    li.appendChild(excluir);
+
+    /* TRATA A AÇÃO DE CLIQUE NO BOTÃO X PARA EXCLUSÃO DO ARQUIVO */
+    excluir.addEventListener('click', (event)=>{
+        event.stopPropagation();
+
+        let id = event.target.parentElement.getAttribute('data-id');
+        // alert(id);
+        db.collection('libri-firestore').doc(id).delete()
+            .then(()=>{window.location.reload();
+            })
+
+    })
 
     // ADICIONANDO O LI NA TAG UL
     livroList.appendChild(li);
